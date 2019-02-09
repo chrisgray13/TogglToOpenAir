@@ -1,9 +1,21 @@
+import sys
 from DailyTimeCsvReader import DailyTimeCsvReader
 from DailyTimeEntry import DailyTimeEntry
 from OpenAirTimesheetPopulator import OpenAirTimesheetPopulator
 
+filename = 'C:\\Users\\cgray\\Downloads\\Toggl_time_entries_2019-02-04_to_2019-02-10 (1).csv'
+
+#Step 0:  Identify method of use
+if len(sys.argv) == 3 and sys.argv[1] == "-f":
+    filename = sys.argv[2]
+else:
+    print("""
+Usage:
+    -f  path to a .csv containing Toggl time entries
+""")
+
 #Step 1:  Read and parse the data from the file
-entries = DailyTimeCsvReader().readData('C:\\Users\\cgray\\Downloads\\Toggl_time_entries_2019-02-04_to_2019-02-10 (1).csv')
+entries = DailyTimeCsvReader().readData(filename)
 
 if len(entries) == 0:
     raise Exception("No time entries")
@@ -38,3 +50,15 @@ for entry in entries:
 populator = OpenAirTimesheetPopulator()
 script = populator.generateTimesheetPopulationScript(aggregate.values())
 print(script)
+
+print("""
+**********************************************************************************
+ Perform the following steps to create a timesheet:
+    1) Copy the above script
+    2) Open Chrome and navigate to https://www.openair.com/index.pl
+    3) Login
+    4) Create a blank timesheet
+    5) Press [F12]
+    6) Paste the above script into the DevTools Console
+    7) Wait about 30 seconds and BAM!!!
+**********************************************************************************""")
