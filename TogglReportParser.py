@@ -1,22 +1,42 @@
 import sys
-from DailyTimeCsvReader import DailyTimeCsvReader
+from datetime import datetime, timedelta
+from TogglDetailedCsvReader import TogglDetailedCsvReader
+from TogglDetailedApiReader import TogglDetailedApiReader
+from TogglDetailedApiMapper import TogglDetailedApiMapper
 from DailyTimeEntry import DailyTimeEntry
 from OpenAirTimesheetPopulator import OpenAirTimesheetPopulator
 
-filename = 'C:\\Users\\cgray\\Downloads\\Toggl_time_entries_2019-02-04_to_2019-02-10 (1).csv'
+entries = []
+
+filename = "C:\\Users\\cgray\\Downloads\\Toggl_time_entries_2019-02-04_to_2019-02-10 (1).csv"
+apiKey = ""
+workspaceId = ""
+startDate = "2019-02-04"
+endDate = (datetime.strptime(startDate, "%Y-%m-%d") + timedelta(6)).date().isoformat()
 
 #Step 0:  Identify method of use
 if len(sys.argv) == 3 and sys.argv[1] == "-f":
     filename = sys.argv[2]
+
+    entries = TogglDetailedCsvReader().readData(filename)
+elif len(sys.argv) == 5 and sys.argv[1] == "-d":
+    apiKey = sys.argv[2]
+    workspaceId = sys.argv[3]
+    startDate = sys.argv[4]
+    endDate = (datetime.strptime(startDate, "%Y-%m-%d") + timedelta(6)).date().isoformat()
+
+    tempEntries = TogglDetailedApiReader(apiKey, workspaceId).download(startDate, endDate)
+
+    mapper = TogglDetailedApiMapper()
+    entries = list(map(lambda entry: mapper.map(entry), tempEntries))
 else:
     print("""
 Usage:
-    -f  path to a .csv containing Toggl time entries
+    -f  [path to a .csv containing Toggl time entries]
+    -d  [api key for Toggl access] [workspace id for Toggl access] [start date of data to download in YYYY-MM-DD format]
 """)
 
 #Step 1:  Read and parse the data from the file
-entries = DailyTimeCsvReader().readData(filename)
-
 if len(entries) == 0:
     raise Exception("No time entries")
 

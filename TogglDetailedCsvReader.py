@@ -1,11 +1,11 @@
-from DailyTimeEntryParser import DailyTimeEntryParser
+from TogglDetailedCsvParser import TogglDetailedCsvParser
 
-class DailyTimeCsvReader:
+class TogglDetailedCsvReader:
     def readData(self, filename):
         entries = []
 
         with open(filename) as f:
-            parser = DailyTimeEntryParser()
+            parser = TogglDetailedCsvParser()
 
             header = f.readline()
             if not parser.isHeaderValid(header):

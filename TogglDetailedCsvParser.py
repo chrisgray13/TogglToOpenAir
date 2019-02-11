@@ -1,10 +1,14 @@
 from DailyTimeEntry import DailyTimeEntry as DailyTimeEntry
 
-class DailyTimeEntryParser:
+class TogglDetailedCsvParser:
     def parse(self, entry):
         parts = entry.split(",")
         if len(parts) == 14:
-            return DailyTimeEntry(parts[7], parts[2], parts[3], parts[5], self.convertDuration(parts[11]))
+            parsedEntry = DailyTimeEntry(parts[7], parts[2], parts[3], parts[5], self.convertDuration(parts[11]))
+            if parsedEntry.isValid():
+                return parsedEntry
+            else:
+                raise Exception("Invalid time entry => ",  parsedEntry)
         else:
             raise Exception("Invalid time entry line => ", entry)
 
