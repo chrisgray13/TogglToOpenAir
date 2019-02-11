@@ -1,28 +1,28 @@
 import requests
-import urllib.request as request
 
 class TogglDetailedApiReader:
     def __init__(self, apiKey, workspaceId):
         self.apiKey = apiKey
         self.workspaceId = workspaceId
 
-    def download(self, startDate, endDate):
+    def get(self, startDate, endDate):
         page = 1
         data = []
 
         while True:
-            result = self.downloadPage(startDate, endDate, page)
-            #for d in result.data:
-            #    data.co
-            data.extend(result["data"].copy())
-            if (result["per_page"] * page) >= result["total_count"]:
-                break
+            result = self.getPage(startDate, endDate, page)
+            if len(result["data"]) == 0:
+                raise Exception("Unable to get data for => ", self.apiKey, self.workspaceId, startDate, endDate)
             else:
-                page += 1
+                data.extend(result["data"].copy())
+                if (result["per_page"] * page) >= result["total_count"]:
+                    break
+                else:
+                    page += 1
         
         return data
 
-    def downloadPage(self, startDate, endDate, page):
+    def getPage(self, startDate, endDate, page):
         url = "https://toggl.com/reports/api/v2/details"
         params = {
             "workspace_id": self.workspaceId,
@@ -33,5 +33,8 @@ class TogglDetailedApiReader:
         }
 
         response = requests.get(url, auth=(self.apiKey, 'api_token'), params=params)
-
-        return response.json()
+        if response.ok:
+            return response.json()
+        else:
+            raise Exception("{0}: {1} => ".format(response.reason, response.json()["error"]["message"]),
+                            self.apiKey, self.workspaceId, startDate, endDate)

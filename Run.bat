@@ -1,8 +1,8 @@
 @ECHO OFF
 CD /d "%~dp0"
 
-SET ApiKey=11b33d94b037db95f58d919988ddadff
-SET WorkspaceId=3217695
+SET ApiKey=
+SET WorkspaceId=
 SET PythonPath=C:\Users\cgray\.virtualenvs\Timesheet-TfBeefbu\Scripts
 
 IF "%1"=="" GOTO DownloadData

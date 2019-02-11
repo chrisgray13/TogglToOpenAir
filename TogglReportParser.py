@@ -1,6 +1,7 @@
 import sys
 from datetime import datetime, timedelta
 from TogglDetailedCsvReader import TogglDetailedCsvReader
+from TogglWorkspaceApiReader import TogglWorkspaceApiReader
 from TogglDetailedApiReader import TogglDetailedApiReader
 from TogglDetailedApiMapper import TogglDetailedApiMapper
 from DailyTimeEntry import DailyTimeEntry
@@ -18,23 +19,44 @@ endDate = (datetime.strptime(startDate, "%Y-%m-%d") + timedelta(6)).date().isofo
 if len(sys.argv) == 3 and sys.argv[1] == "-f":
     filename = sys.argv[2]
 
+    print("\nParsing data from => ", filename)
+
     entries = TogglDetailedCsvReader().readData(filename)
-elif len(sys.argv) == 5 and sys.argv[1] == "-d":
+elif len(sys.argv) >= 4 and len(sys.argv) <= 5 and sys.argv[1] == "-d":
     apiKey = sys.argv[2]
-    workspaceId = sys.argv[3]
-    startDate = sys.argv[4]
+
+    if len(sys.argv) == 5:
+        workspaceId = sys.argv[3]
+        startDate = sys.argv[4]
+    else:
+        workspaces = TogglWorkspaceApiReader(apiKey).get()
+        if len(workspaces) == 1:
+            workspaceId = workspaces[0]["id"]
+        elif len(workspaces) == 0:
+            raise Exception("Unable to find workspaces for API Key => ", apiKey)
+        else:
+            raise Exception("Unable to determine default workspace.  Please specify from the command-line => ",
+                            list(map(lambda w: w["id"], workspaces)))
+
+        startDate = sys.argv[3]
+
     endDate = (datetime.strptime(startDate, "%Y-%m-%d") + timedelta(6)).date().isoformat()
 
-    tempEntries = TogglDetailedApiReader(apiKey, workspaceId).download(startDate, endDate)
+    print("\nGetting data for => ", apiKey, workspaceId, startDate, endDate)
 
-    mapper = TogglDetailedApiMapper()
-    entries = list(map(lambda entry: mapper.map(entry), tempEntries))
+    tempEntries = TogglDetailedApiReader(apiKey, workspaceId).get(startDate, endDate)
+    if len(tempEntries) == 0:
+        raise Exception("Unable to get data for => ", apiKey, workspaceId, startDate, endDate)
+    else:
+        mapper = TogglDetailedApiMapper()
+        entries = list(map(lambda entry: mapper.map(entry), tempEntries))
 else:
     print("""
 Usage:
     -f  [path to a .csv containing Toggl time entries]
     -d  [api key for Toggl access] [workspace id for Toggl access] [start date of data to download in YYYY-MM-DD format]
 """)
+    raise Exception("Invalid usage =>", sys.argv)
 
 #Step 1:  Read and parse the data from the file
 if len(entries) == 0:
@@ -69,7 +91,7 @@ for entry in entries:
 #Step 3:  Generate the OpenAir timesheet population code
 populator = OpenAirTimesheetPopulator()
 script = populator.generateTimesheetPopulationScript(aggregate.values())
-print(script)
+print("\n", script)
 
 print("""
 **********************************************************************************
