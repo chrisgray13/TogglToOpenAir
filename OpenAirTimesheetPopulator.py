@@ -31,18 +31,18 @@ class OpenAirTimesheetPopulator:
             $('.btn-oa.dialogOkButton').click();
         }
     }
-"""
 
-        row = 1
+    var lastRow = $("tr.gridDataEmptyRow select")[0];
+    var row = lastRow === undefined ? 1 : parseInt(lastRow.id.slice(7));
+"""
 
         for projectEntries in data:
             script += "\n"
 
             for entry in projectEntries.values():
-                script += "    addHours({0}, {1}, {2}, {3}, '{4}');\n".format(row, getDayOfTheWeek(entry.date, 7), getDay(entry.date), roundDuration(entry.duration), entry.description.replace("'", "\\'"))
+                script += "    addHours(row, {0}, {1}, {2}, '{3}');\n".format(getDayOfTheWeek(entry.date, 7), getDay(entry.date), roundDuration(entry.duration), entry.description.replace("'", "\\'"))
 
-            script += "    setTaskInfo({0}, '{1}', '{2}', '{3}');\n".format(row, entry.client.replace("'", "\\'"), entry.project.replace("'", "\\'"), "Non-Billable")
-            row += 1
+            script += "    setTaskInfo(row++, '{0}', '{1}', '{2}');\n".format(entry.client.replace("'", "\\'"), entry.project.replace("'", "\\'"), "Non-Billable")
 
         script += "})();"
 
