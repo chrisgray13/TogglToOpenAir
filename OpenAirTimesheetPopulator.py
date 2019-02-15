@@ -4,6 +4,10 @@ class OpenAirTimesheetPopulator:
     def generateTimesheetPopulationScript(self, data):
         script = """\
 (function () {
+    $("body").append("<div id=\\"loadingImage\\" style=\\"background: #3F3F3F;width: 100%;height: 100%;position: absolute;top: 0px;left: 0px;z-index: 10000;opacity: .8;text-align: center;\\"><span style=\\"font-size: 20em;color: #000000;padding: 20px;\\">Loading</span></div>");
+})();
+
+setTimeout(function() {
     function setTaskInfo(row, project, task, timeType) {
         // Set the Project
         var ctrl = $('#ts_c1_r' + row);
@@ -44,6 +48,8 @@ class OpenAirTimesheetPopulator:
 
             script += "    setTaskInfo(row++, '{0}', '{1}', '{2}');\n".format(entry.client.replace("'", "\\'"), entry.project.replace("'", "\\'"), "Non-Billable")
 
-        script += "})();"
+        script += """
+    $(\"body #loadingImage\").remove();
+}, 1000);"""
 
         return script
