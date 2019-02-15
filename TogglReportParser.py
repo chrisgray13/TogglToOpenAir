@@ -1,6 +1,7 @@
 import sys
 from datetime import datetime, timedelta
 from TogglDetailedCsvReader import TogglDetailedCsvReader
+from TogglDetailedCsvParser import TogglDetailedCsvParser
 from TogglWorkspaceApiReader import TogglWorkspaceApiReader
 from TogglDetailedApiReader import TogglDetailedApiReader
 from TogglDetailedApiMapper import TogglDetailedApiMapper
@@ -17,12 +18,24 @@ endDate = (datetime.strptime(startDate, "%Y-%m-%d") + timedelta(6)).date().isofo
 
 #Step 0:  Identify method of use
 if len(sys.argv) == 3 and sys.argv[1] == "-f":
+    #Step 1:  Read and parse the data from the file
     filename = sys.argv[2]
 
     print("\nParsing data from => ", filename)
 
-    entries = TogglDetailedCsvReader().readData(filename)
+    tempEntries = TogglDetailedCsvReader().readData(filename)
+    if len(tempEntries) == 0:
+        raise Exception("Unable to get data for => ", filename)
+    else:
+        parser = TogglDetailedCsvParser()
+
+        header = tempEntries[0]
+        if parser.isHeaderValid(header):
+            entries = list(map(lambda line: parser.parse(line), tempEntries[1:]))
+        else:
+            raise Exception("Invalid header row => ", header)
 elif len(sys.argv) >= 4 and len(sys.argv) <= 5 and sys.argv[1] == "-d":
+    #Step 1:  Read and parse the data from the Toggl API
     apiKey = sys.argv[2]
 
     if len(sys.argv) == 5:
@@ -58,11 +71,8 @@ Usage:
 """)
     raise Exception("Invalid usage =>", sys.argv)
 
-#Step 1:  Read and parse the data from the file
 if len(entries) == 0:
     raise Exception("No time entries")
-
-#TODO:  Add date validation to ensure it does not span more than 7 days
 
 #Step 2:  Aggregate the time entries by Date, Client, and Project
 aggregate = dict()
