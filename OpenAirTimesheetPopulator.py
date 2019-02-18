@@ -44,7 +44,11 @@ setTimeout(function() {
             script += "\n"
 
             for entry in projectEntries.values():
-                script += "    addHours(row, {0}, {1}, {2}, '{3}');\n".format(getDayOfTheWeek(entry.date, 7), getDay(entry.date), roundDuration(entry.duration), entry.description.replace("'", "\\'"))
+                roundedDuration = roundDuration(entry.duration)
+                if roundedDuration <= 0.0:
+                    script += "    // Skipping =>"
+
+                script += "    addHours(row, {0}, {1}, {2}, '{3}');\n".format(getDayOfTheWeek(entry.date, 7), getDay(entry.date), roundedDuration, entry.description.replace("'", "\\'"))
 
             script += "    setTaskInfo(row++, '{0}', '{1}', '{2}');\n".format(entry.client.replace("'", "\\'"), entry.project.replace("'", "\\'"), "Non-Billable")
 

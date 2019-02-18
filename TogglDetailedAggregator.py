@@ -10,7 +10,7 @@ class TogglDetailedAggregator:
                     tempentry = tempentries[entry.date]
 
                     # Only add new descriptions
-                    if tempentry.description.find(entry.description) == -1:
+                    if tempentry.description.find(entry.description) == -1: # Not found
                         tempentry.description = tempentry.description + ", " + entry.description
 
                     tempentry.duration = tempentry.duration + entry.duration
