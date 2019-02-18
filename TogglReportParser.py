@@ -1,6 +1,7 @@
 import sys
 
 from TogglDetailedCsvReader import TogglDetailedCsvReader
+from TogglDetailedCsvValidator import TogglDetailedCsvValidator
 from TogglDetailedCsvParser import TogglDetailedCsvParser
 from TogglDetailedCsvHandler import TogglDetailedCsvHandler
 
@@ -22,7 +23,7 @@ entries = []
 if len(sys.argv) == 3 and sys.argv[1] == "-f":
     #Step 1:  Read and parse the data from the file
     entries = TogglDetailedCsvHandler(
-        TogglDetailedCsvReader(), TogglDetailedCsvParser(DailyTimeEntryValidator())).handle(sys.argv[2])
+        TogglDetailedCsvReader(), TogglDetailedCsvValidator(), TogglDetailedCsvParser(DailyTimeEntryValidator())).handle(sys.argv[2])
 elif len(sys.argv) == 4 and sys.argv[1] == "-d":
     #Step 1:  Read and parse the data from the Toggl API
     entries = TogglDetailedApiHandler(

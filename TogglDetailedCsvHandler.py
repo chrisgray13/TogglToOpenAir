@@ -1,6 +1,7 @@
 class TogglDetailedCsvHandler:
-    def __init__(self, detailedReader, detailedParser):
+    def __init__(self, detailedReader, detailedValidator, detailedParser):
         self.detailedReader = detailedReader
+        self.detailedValidator = detailedValidator
         self.detailedParser = detailedParser
 
     def handle(self, filename):
@@ -11,7 +12,7 @@ class TogglDetailedCsvHandler:
             raise Exception("Unable to get data for => ", filename)
         else:
             header = tempEntries[0]
-            if self.detailedParser.isHeaderValid(header):
+            if self.detailedValidator.isHeaderValid(header):
                 return list(map(lambda line: self.detailedParser.parse(line), tempEntries[1:]))
             else:
                 raise Exception("Invalid header row => ", header)

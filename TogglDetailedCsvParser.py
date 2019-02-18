@@ -15,9 +15,6 @@ class TogglDetailedCsvParser:
         else:
             raise Exception("Invalid time entry line => ", entry)
 
-    def isHeaderValid(self, header):
-        return header == "ï»¿User,Email,Client,Project,Task,Description,Billable,Start date,Start time,End date,End time,Duration,Tags,Amount ()\n"
-
     def convertDuration(self, duration):
         parts = duration.split(":")
 
