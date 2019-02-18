@@ -23,15 +23,15 @@ if len(sys.argv) == 3 and sys.argv[1] == "-f":
 elif len(sys.argv) == 4 and sys.argv[1] == "-d":
     #Step 1:  Read and parse the data from the Toggl API
     entries = TogglDetailedApiHandler(
-        TogglDetailedApiReader(sys.argv[2], TogglWorkspaceDefaulter(
-            TogglWorkspaceApiReader(sys.argv[2]))),
-        TogglDetailedApiMapper()).handle(sys.argv[3])
+        TogglDetailedApiReader(sys.argv[3], TogglWorkspaceDefaulter(
+            TogglWorkspaceApiReader(sys.argv[3]))),
+        TogglDetailedApiMapper()).handle(sys.argv[2])
 elif len(sys.argv) == 5 and sys.argv[1] == "-d":
     #Step 1:  Read and parse the data from the Toggl API
     entries = TogglDetailedApiHandler(
-        TogglDetailedApiReader(sys.argv[2], TogglWorkspaceDefaulter(
-            TogglWorkspaceApiReader(sys.argv[2]), sys.argv[4])),
-        TogglDetailedApiMapper()).handle(sys.argv[3])
+        TogglDetailedApiReader(sys.argv[3], TogglWorkspaceDefaulter(
+            TogglWorkspaceApiReader(sys.argv[3]), sys.argv[4])),
+        TogglDetailedApiMapper()).handle(sys.argv[2])
 else:
     print("""
 Usage:
