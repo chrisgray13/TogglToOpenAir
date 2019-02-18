@@ -7,7 +7,12 @@ class TogglDetailedCsvParser:
     def parse(self, entry):
         parts = entry.split(",")
         if len(parts) == 14:
-            parsedEntry = DailyTimeEntry(parts[7], parts[2], parts[3], parts[5], self.convertDuration(parts[11]))
+            try:
+                duration = self.convertDuration(parts[11])
+            except IndexError:
+                raise ValueError("Invalid time entry based on duration => ", entry, parts[11])
+
+            parsedEntry = DailyTimeEntry(parts[7], parts[2], parts[3], parts[5], duration)
             if self.entryValidator.isValid(parsedEntry):
                 return parsedEntry
             else:
