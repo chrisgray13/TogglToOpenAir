@@ -11,7 +11,7 @@ def getDay(date):
     return datetime.strptime(date, "%Y-%m-%d").day
 
 def getDayOfTheWeek(date, sundayPosition=1):
-    if sundayPosition < 1 and sundayPosition > 7:
+    if sundayPosition < 1 or sundayPosition > 7:
         raise ValueError("sundayPosition must be in the range of 1 to 7 => {0}".format(sundayPosition))
 
     weekday = datetime.strptime(date, "%Y-%m-%d").isoweekday() # Sunday = 7
