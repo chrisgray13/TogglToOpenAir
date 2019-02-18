@@ -1,10 +1,14 @@
 class TogglDetailedAggregator:
+    def __init__(self, entryKeyGenerator):
+        self.entryKeyGenerator = entryKeyGenerator
+
     def aggregate(self, entries):
         aggregate = dict()
 
         for entry in entries:
-            if entry.key() in aggregate:
-                tempentries = aggregate[entry.key()]
+            entryKey = self.entryKeyGenerator.generate(entry)
+            if entryKey in aggregate:
+                tempentries = aggregate[entryKey]
 
                 if entry.date in tempentries:
                     tempentry = tempentries[entry.date]
@@ -16,11 +20,11 @@ class TogglDetailedAggregator:
                     tempentry.duration = tempentry.duration + entry.duration
 
                     tempentries[entry.date] = tempentry
-                    aggregate[entry.key()] = tempentries
+                    aggregate[entryKey] = tempentries
                 else:
                     tempentries[entry.date] = entry
-                    aggregate[entry.key()] = tempentries
+                    aggregate[entryKey] = tempentries
             else:
-                aggregate[entry.key()] = {entry.date: entry}
+                aggregate[entryKey] = {entry.date: entry}
             
         return aggregate

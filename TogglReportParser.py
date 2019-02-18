@@ -10,7 +10,10 @@ from TogglDetailedApiReader import TogglDetailedApiReader
 from TogglDetailedApiMapper import TogglDetailedApiMapper
 from TogglDetailedApiHandler import TogglDetailedApiHandler
 
+from DailyTimeEntryKeyGenerator import DailyTimeEntryKeyGenerator
+from DailyTimeEntryValidator import DailyTimeEntryValidator
 from TogglDetailedAggregator import TogglDetailedAggregator
+
 from OpenAirTimesheetPopulator import OpenAirTimesheetPopulator
 
 entries = []
@@ -19,19 +22,19 @@ entries = []
 if len(sys.argv) == 3 and sys.argv[1] == "-f":
     #Step 1:  Read and parse the data from the file
     entries = TogglDetailedCsvHandler(
-        TogglDetailedCsvReader(), TogglDetailedCsvParser()).handle(sys.argv[2])
+        TogglDetailedCsvReader(), TogglDetailedCsvParser(DailyTimeEntryValidator())).handle(sys.argv[2])
 elif len(sys.argv) == 4 and sys.argv[1] == "-d":
     #Step 1:  Read and parse the data from the Toggl API
     entries = TogglDetailedApiHandler(
         TogglDetailedApiReader(sys.argv[3], TogglWorkspaceDefaulter(
             TogglWorkspaceApiReader(sys.argv[3]))),
-        TogglDetailedApiMapper()).handle(sys.argv[2])
+        TogglDetailedApiMapper(DailyTimeEntryValidator())).handle(sys.argv[2])
 elif len(sys.argv) == 5 and sys.argv[1] == "-d":
     #Step 1:  Read and parse the data from the Toggl API
     entries = TogglDetailedApiHandler(
         TogglDetailedApiReader(sys.argv[3], TogglWorkspaceDefaulter(
             TogglWorkspaceApiReader(sys.argv[3]), sys.argv[4])),
-        TogglDetailedApiMapper()).handle(sys.argv[2])
+        TogglDetailedApiMapper(DailyTimeEntryValidator())).handle(sys.argv[2])
 else:
     print("""
 Usage:
@@ -44,7 +47,7 @@ if len(entries) == 0:
     raise Exception("No time entries")
 
 #Step 2:  Aggregate the time entries by Date, Client, and Project
-aggregate = TogglDetailedAggregator().aggregate(entries)
+aggregate = TogglDetailedAggregator(DailyTimeEntryKeyGenerator()).aggregate(entries)
 
 #Step 3:  Generate the OpenAir timesheet population code
 populator = OpenAirTimesheetPopulator()

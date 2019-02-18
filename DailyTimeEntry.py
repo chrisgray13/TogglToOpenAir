@@ -5,9 +5,3 @@ class DailyTimeEntry:
         self.project = project or ""
         self.description = description
         self.duration = duration
-
-    def key(self):
-        return self.client + "|" + self.project
-    
-    def isValid(self):
-        return self.description != None
