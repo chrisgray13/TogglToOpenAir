@@ -1,18 +1,23 @@
 import requests
 
 class TogglDetailedApiReader:
-    def __init__(self, apiKey, workspaceId):
+    def __init__(self, apiKey, workspaceDefaulter):
         self.apiKey = apiKey
-        self.workspaceId = workspaceId
+        self.workspaceDefaulter = workspaceDefaulter
 
     def get(self, startDate, endDate):
         page = 1
         data = []
 
+        workspaceId = self.workspaceDefaulter.get()
+
+        print("\nGetting data for => ", self.apiKey,
+              workspaceId, startDate, endDate)
+
         while True:
-            result = self.getPage(startDate, endDate, page)
+            result = self.getPage(workspaceId, startDate, endDate, page)
             if len(result["data"]) == 0:
-                raise Exception("Unable to get data for => ", self.apiKey, self.workspaceId, startDate, endDate)
+                raise Exception("Unable to get data for => ", self.apiKey, workspaceId, startDate, endDate)
             else:
                 data.extend(result["data"].copy())
                 if (result["per_page"] * page) >= result["total_count"]:
@@ -22,10 +27,10 @@ class TogglDetailedApiReader:
         
         return data
 
-    def getPage(self, startDate, endDate, page):
+    def getPage(self, workspaceId, startDate, endDate, page):
         url = "https://toggl.com/reports/api/v2/details"
         params = {
-            "workspace_id": self.workspaceId,
+            "workspace_id": workspaceId,
             "user_agent": "toggle_to_openair",
             "since": startDate,
             "until": endDate,
@@ -37,4 +42,4 @@ class TogglDetailedApiReader:
             return response.json()
         else:
             raise Exception("{0}: {1} => ".format(response.reason, response.json()["error"]["message"]),
-                            self.apiKey, self.workspaceId, startDate, endDate)
+                            self.apiKey, workspaceId, startDate, endDate)

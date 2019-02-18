@@ -1,6 +1,15 @@
 import sys
+
+from TogglDetailedCsvReader import TogglDetailedCsvReader
+from TogglDetailedCsvParser import TogglDetailedCsvParser
 from TogglDetailedCsvHandler import TogglDetailedCsvHandler
+
+from TogglWorkspaceApiReader import TogglWorkspaceApiReader
+from TogglWorkspaceDefaulter import TogglWorkspaceDefaulter
+from TogglDetailedApiReader import TogglDetailedApiReader
+from TogglDetailedApiMapper import TogglDetailedApiMapper
 from TogglDetailedApiHandler import TogglDetailedApiHandler
+
 from TogglDetailedAggregator import TogglDetailedAggregator
 from OpenAirTimesheetPopulator import OpenAirTimesheetPopulator
 
@@ -9,14 +18,20 @@ entries = []
 #Step 0:  Identify method of use
 if len(sys.argv) == 3 and sys.argv[1] == "-f":
     #Step 1:  Read and parse the data from the file
-    entries = TogglDetailedCsvHandler().handle(sys.argv[2])
+    entries = TogglDetailedCsvHandler(
+        TogglDetailedCsvReader(), TogglDetailedCsvParser()).handle(sys.argv[2])
 elif len(sys.argv) == 4 and sys.argv[1] == "-d":
     #Step 1:  Read and parse the data from the Toggl API
-    entries = TogglDetailedApiHandler().handle(sys.argv[2], sys.argv[3])
+    entries = TogglDetailedApiHandler(
+        TogglDetailedApiReader(sys.argv[2], TogglWorkspaceDefaulter(
+            TogglWorkspaceApiReader(sys.argv[2]))),
+        TogglDetailedApiMapper()).handle(sys.argv[3])
 elif len(sys.argv) == 5 and sys.argv[1] == "-d":
     #Step 1:  Read and parse the data from the Toggl API
-    entries = TogglDetailedApiHandler().handle(
-        sys.argv[2], sys.argv[3], sys.argv[4])
+    entries = TogglDetailedApiHandler(
+        TogglDetailedApiReader(sys.argv[2], TogglWorkspaceDefaulter(
+            TogglWorkspaceApiReader(sys.argv[2]), sys.argv[4])),
+        TogglDetailedApiMapper()).handle(sys.argv[3])
 else:
     print("""
 Usage:
