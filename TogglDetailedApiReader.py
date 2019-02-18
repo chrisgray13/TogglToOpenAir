@@ -34,7 +34,9 @@ class TogglDetailedApiReader:
             "user_agent": "toggle_to_openair",
             "since": startDate,
             "until": endDate,
-            "page": page
+            "page": page,
+            "order_field": "date",
+            "order_desc": "off"
         }
 
         response = requests.get(url, auth=(self.apiKey, 'api_token'), params=params)
