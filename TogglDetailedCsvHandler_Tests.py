@@ -38,7 +38,7 @@ class TogglDetailedCsvHandler_Tests(unittest.TestCase):
                 "some user,user email adress,some client,project 1,,Meeting,No,2019-02-11,09:15:41,2019-02-11,09:24:58,00:09:17,,",
                 "some user,user email adress,some client,project 1,,Email,No,2019-02-11,09:24:58,2019-02-11,09:31:36,00:06:38,,"
             ]
-            parsedEntries = TogglDetailedCsvHandler(
+            TogglDetailedCsvHandler(
                 MockTogglDetailedCsvReader(entries),
                 TogglDetailedCsvValidator(),
                 TogglDetailedCsvParser(DailyTimeEntryValidator())).handle("some file path")
