@@ -7,7 +7,7 @@ This requires the following to be useful:
 - [Toggl](https://toggl.com/) for tracking your time
 - [OpenAir](https://www.openair.com/index.pl) for submitting a timesheet
 
-#### To use*:
+#### To use\*:
 
 ###### Option A (easiest):
 1) Modify the Run.bat to specify:
@@ -22,4 +22,4 @@ This requires the following to be useful:
 3) Drag and drop the downloaded .csv onto the Run.bat
 4) Follow the instructions on the console
 
-> \*These options depend on capturing time with Toggl
+**_\*These options depend on capturing time with Toggl_**
