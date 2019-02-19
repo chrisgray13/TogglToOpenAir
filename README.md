@@ -1,10 +1,10 @@
 # TogglToOpenAir
 This provides a way to create a timesheet in OpenAir from Toggl
 
-### Pre-requisites:
+#### Pre-requisites:
 This requires an installation of Python (https://www.python.org/downloads/).  You may also have to manually install requests:  pip install requests
 
-### To use:
+#### To use:
 
 ###### Option A (easiest):
 1) Modify the Run.bat to specify:
