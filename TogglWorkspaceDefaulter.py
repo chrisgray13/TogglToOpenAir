@@ -1,10 +1,10 @@
 class TogglWorkspaceDefaulter:
-    def __init__(self, workspaceReader, defaultWorkspaceId = ""):
+    def __init__(self, workspaceReader, defaultWorkspaceId = None):
         self.workspaceReader = workspaceReader
         self.workspaceId = defaultWorkspaceId
 
     def get(self):
-        if len(self.workspaceId) == 0:
+        if self.workspaceId == None:
             workspaces = self.workspaceReader.get()
             if len(workspaces) == 1:
                 self.workspaceId = workspaces[0]["id"]
