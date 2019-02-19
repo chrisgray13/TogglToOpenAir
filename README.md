@@ -15,6 +15,6 @@ This requires an installation of [Python](https://www.python.org/downloads/).  Y
 
 ###### Option 2:
 1) Modify the Run.bat to specify the path containing Python
-2) Download a week's worth of time entries--starting on Monday--from Toggl as a Detailed report
+2) Download a week's worth of time entries--starting on Monday--from Toggl as a [Detailed report](https://toggl.com/app/reports/detailed)
 3) Drag and drop the downloaded .csv onto the Run.bat
 4) Follow the instructions on the console
