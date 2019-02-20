@@ -1,4 +1,5 @@
 import sys
+from datetime import datetime, timedelta
 
 from TogglDetailedCsvReader import TogglDetailedCsvReader
 from TogglDetailedCsvValidator import TogglDetailedCsvValidator
@@ -26,16 +27,22 @@ if len(sys.argv) == 3 and sys.argv[1] == "-f":
         TogglDetailedCsvReader(), TogglDetailedCsvValidator(), TogglDetailedCsvParser(DailyTimeEntryValidator())).handle(sys.argv[2])
 elif len(sys.argv) == 4 and sys.argv[1] == "-d":
     #Step 1:  Read and parse the data from the Toggl API
+    endDate = (datetime.strptime(sys.argv[2], "%Y-%m-%d") +
+                timedelta(6)).date().isoformat()
+
     entries = TogglDetailedApiHandler(
         TogglDetailedApiReader(sys.argv[3], TogglWorkspaceDefaulter(
             TogglWorkspaceApiReader(sys.argv[3]))),
-        TogglDetailedApiMapper(DailyTimeEntryValidator())).handle(sys.argv[2])
+        TogglDetailedApiMapper(DailyTimeEntryValidator())).handle(sys.argv[2], endDate)
 elif len(sys.argv) == 5 and sys.argv[1] == "-d":
     #Step 1:  Read and parse the data from the Toggl API
+    endDate = (datetime.strptime(sys.argv[2], "%Y-%m-%d") +
+               timedelta(6)).date().isoformat()
+
     entries = TogglDetailedApiHandler(
         TogglDetailedApiReader(sys.argv[3], TogglWorkspaceDefaulter(
             TogglWorkspaceApiReader(sys.argv[3]), sys.argv[4])),
-        TogglDetailedApiMapper(DailyTimeEntryValidator())).handle(sys.argv[2])
+        TogglDetailedApiMapper(DailyTimeEntryValidator())).handle(sys.argv[2], endDate)
 else:
     print("""
 Usage:

@@ -46,7 +46,7 @@ class TogglDetailedApiHandler_Tests(unittest.TestCase):
 
         mappedEntries = TogglDetailedApiHandler(
             MockTogglDetailedApiReader(entries),
-            TogglDetailedApiMapper(DailyTimeEntryValidator())).handle("2004-02-28")
+            TogglDetailedApiMapper(DailyTimeEntryValidator())).handle("2004-02-28", "2004-03-05")
 
         self.assertEqual(len(mappedEntries), 5)
         self.assertEqual(mappedEntries[0].description, "Meeting")
@@ -59,4 +59,4 @@ class TogglDetailedApiHandler_Tests(unittest.TestCase):
         with self.assertRaises(Exception):
             TogglDetailedApiHandler(
                 MockTogglDetailedApiReader([]),
-                TogglDetailedApiMapper(DailyTimeEntryValidator())).handle("2004-02-28")
+                TogglDetailedApiMapper(DailyTimeEntryValidator())).handle("2004-02-28", "2004-03-05")
