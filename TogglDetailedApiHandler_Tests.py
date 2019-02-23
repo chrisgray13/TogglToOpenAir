@@ -1,5 +1,5 @@
 import unittest
-from mocks.MockTogglDetailedApiReader import MockTogglDetailedApiReader
+from mocks.MockTogglDetailedApi import MockTogglDetailedApi
 from DailyTimeEntryValidator import DailyTimeEntryValidator
 from TogglDetailedApiMapper import TogglDetailedApiMapper
 from TogglDetailedApiHandler import TogglDetailedApiHandler
@@ -45,7 +45,7 @@ class TogglDetailedApiHandler_Tests(unittest.TestCase):
         ]
 
         mappedEntries = TogglDetailedApiHandler(
-            MockTogglDetailedApiReader(entries),
+            MockTogglDetailedApi(entries),
             TogglDetailedApiMapper(DailyTimeEntryValidator())).handle("2004-02-28", "2004-03-05")
 
         self.assertEqual(len(mappedEntries), 5)
@@ -58,5 +58,5 @@ class TogglDetailedApiHandler_Tests(unittest.TestCase):
     def test_handle_with_no_entries(self):
         with self.assertRaises(Exception):
             TogglDetailedApiHandler(
-                MockTogglDetailedApiReader([]),
+                MockTogglDetailedApi([]),
                 TogglDetailedApiMapper(DailyTimeEntryValidator())).handle("2004-02-28", "2004-03-05")

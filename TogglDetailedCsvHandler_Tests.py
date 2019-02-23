@@ -1,5 +1,5 @@
 import unittest
-from mocks.MockTogglDetailedCsvReader import MockTogglDetailedCsvReader
+from mocks.MockFileLineHandler import MockFileLineHandler
 from TogglDetailedCsvValidator import TogglDetailedCsvValidator
 from DailyTimeEntryValidator import DailyTimeEntryValidator
 from TogglDetailedCsvParser import TogglDetailedCsvParser
@@ -19,7 +19,7 @@ class TogglDetailedCsvHandler_Tests(unittest.TestCase):
             "some user,user email adress,some client,project 6,,Helping with Feature,No,2004-02-28,12:34:58,2004-02-28,13:16:49,00:41:51,,"
         ]
         parsedEntries = TogglDetailedCsvHandler(
-            MockTogglDetailedCsvReader(entries),
+            MockFileLineHandler(entries),
             TogglDetailedCsvValidator(),
             TogglDetailedCsvParser(DailyTimeEntryValidator())).handle("some file path")
 
@@ -34,7 +34,7 @@ class TogglDetailedCsvHandler_Tests(unittest.TestCase):
     def test_handle_with_no_entries(self):
         with self.assertRaises(Exception):
             TogglDetailedCsvHandler(
-                MockTogglDetailedCsvReader([]),
+                MockFileLineHandler([]),
                 TogglDetailedCsvValidator(),
                 TogglDetailedCsvParser(DailyTimeEntryValidator())).handle("some file path")
 
@@ -45,6 +45,6 @@ class TogglDetailedCsvHandler_Tests(unittest.TestCase):
                 "some user,user email adress,some client,project 1,,Email,No,2019-02-11,09:24:58,2019-02-11,09:31:36,00:06:38,,"
             ]
             TogglDetailedCsvHandler(
-                MockTogglDetailedCsvReader(entries),
+                MockFileLineHandler(entries),
                 TogglDetailedCsvValidator(),
                 TogglDetailedCsvParser(DailyTimeEntryValidator())).handle("some file path")

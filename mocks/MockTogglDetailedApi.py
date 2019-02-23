@@ -1,4 +1,4 @@
-class MockTogglDetailedApiReader:
+class MockTogglDetailedApi:
     def __init__(self, data):
         self.data = data
 

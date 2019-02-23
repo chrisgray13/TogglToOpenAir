@@ -1,4 +1,4 @@
-class MockTogglWorkspaceApiReader:
+class MockTogglWorkspaceApi:
     def __init__(self, workspaces):
         self.workspaces = workspaces
 

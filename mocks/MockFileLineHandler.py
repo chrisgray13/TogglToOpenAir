@@ -1,4 +1,4 @@
-class MockTogglDetailedCsvReader:
+class MockFileLineHandler:
     def __init__(self, entries):
         self.entries = entries
 
