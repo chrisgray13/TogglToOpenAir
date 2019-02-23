@@ -1,4 +1,4 @@
-class TogglDetailedCsvReader:
+class FileLineHandler:
     def readData(self, filename):
         entries = []
 
