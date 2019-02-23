@@ -1,5 +1,5 @@
 import unittest
-from Mocks.MockTogglWorkspaceApiReader import MockTogglWorkspaceApiReader
+from mocks.MockTogglWorkspaceApiReader import MockTogglWorkspaceApiReader
 from TogglWorkspaceDefaulter import TogglWorkspaceDefaulter
 
 

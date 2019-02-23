@@ -1,5 +1,5 @@
 import unittest
-from Mocks.MockTogglDetailedCsvReader import MockTogglDetailedCsvReader
+from mocks.MockTogglDetailedCsvReader import MockTogglDetailedCsvReader
 from TogglDetailedCsvValidator import TogglDetailedCsvValidator
 from DailyTimeEntryValidator import DailyTimeEntryValidator
 from TogglDetailedCsvParser import TogglDetailedCsvParser

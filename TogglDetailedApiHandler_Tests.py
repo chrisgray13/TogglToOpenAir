@@ -1,5 +1,5 @@
 import unittest
-from Mocks.MockTogglDetailedApiReader import MockTogglDetailedApiReader
+from mocks.MockTogglDetailedApiReader import MockTogglDetailedApiReader
 from DailyTimeEntryValidator import DailyTimeEntryValidator
 from TogglDetailedApiMapper import TogglDetailedApiMapper
 from TogglDetailedApiHandler import TogglDetailedApiHandler
