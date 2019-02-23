@@ -6,9 +6,9 @@ from TogglDetailedCsvValidator import TogglDetailedCsvValidator
 from TogglDetailedCsvParser import TogglDetailedCsvParser
 from TogglDetailedCsvHandler import TogglDetailedCsvHandler
 
-from toggl_api.TogglWorkspaceApiReader import TogglWorkspaceApiReader
+from toggl_api.TogglWorkspaceApi import TogglWorkspaceApi
 from TogglWorkspaceDefaulter import TogglWorkspaceDefaulter
-from toggl_api.TogglDetailedApiReader import TogglDetailedApiReader
+from toggl_api.TogglDetailedApi import TogglDetailedApi
 from TogglDetailedApiMapper import TogglDetailedApiMapper
 from TogglDetailedApiHandler import TogglDetailedApiHandler
 
@@ -31,8 +31,8 @@ elif len(sys.argv) == 4 and sys.argv[1] == "-d":
                 timedelta(6)).date().isoformat()
 
     entries = TogglDetailedApiHandler(
-        TogglDetailedApiReader(sys.argv[3], TogglWorkspaceDefaulter(
-            TogglWorkspaceApiReader(sys.argv[3]))),
+        TogglDetailedApi(sys.argv[3], TogglWorkspaceDefaulter(
+            TogglWorkspaceApi(sys.argv[3]))),
         TogglDetailedApiMapper(DailyTimeEntryValidator())).handle(sys.argv[2], endDate)
 elif len(sys.argv) == 5 and sys.argv[1] == "-d":
     #Step 1:  Read and parse the data from the Toggl API
@@ -40,8 +40,8 @@ elif len(sys.argv) == 5 and sys.argv[1] == "-d":
                timedelta(6)).date().isoformat()
 
     entries = TogglDetailedApiHandler(
-        TogglDetailedApiReader(sys.argv[3], TogglWorkspaceDefaulter(
-            TogglWorkspaceApiReader(sys.argv[3]), sys.argv[4])),
+        TogglDetailedApi(sys.argv[3], TogglWorkspaceDefaulter(
+            TogglWorkspaceApi(sys.argv[3]), sys.argv[4])),
         TogglDetailedApiMapper(DailyTimeEntryValidator())).handle(sys.argv[2], endDate)
 else:
     print("""

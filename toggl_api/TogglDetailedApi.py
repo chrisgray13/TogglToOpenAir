@@ -1,6 +1,6 @@
 import requests
 
-class TogglDetailedApiReader:
+class TogglDetailedApi:
     def __init__(self, apiKey, workspaceDefaulter):
         self.apiKey = apiKey
         self.workspaceDefaulter = workspaceDefaulter
