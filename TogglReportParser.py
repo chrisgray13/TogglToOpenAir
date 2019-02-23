@@ -6,9 +6,9 @@ from TogglDetailedCsvValidator import TogglDetailedCsvValidator
 from TogglDetailedCsvParser import TogglDetailedCsvParser
 from TogglDetailedCsvHandler import TogglDetailedCsvHandler
 
-from TogglWorkspaceApiReader import TogglWorkspaceApiReader
+from toggl_api.TogglWorkspaceApiReader import TogglWorkspaceApiReader
 from TogglWorkspaceDefaulter import TogglWorkspaceDefaulter
-from TogglDetailedApiReader import TogglDetailedApiReader
+from toggl_api.TogglDetailedApiReader import TogglDetailedApiReader
 from TogglDetailedApiMapper import TogglDetailedApiMapper
 from TogglDetailedApiHandler import TogglDetailedApiHandler
 
