@@ -3,7 +3,7 @@ This provides a way to create a timesheet in OpenAir based on tracking data in T
 
 #### Pre-requisites:
 This requires the following to be useful:
-- An installation of [Python](https://www.python.org/downloads/).  You may also have to manually install requests:  `pip install requests`
+- An installation of [Python](https://www.python.org/downloads/)--Not sure exactly the minimum compatible version, but it works with 3.7.2 and not 2.7.  You may also have to manually install requests:  `pip install requests`
 - [Toggl](https://toggl.com/) for tracking your time
 - [OpenAir](https://www.openair.com/index.pl) for submitting a timesheet
 
